@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search Hospitals</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header><h1>Find Hospital</h1><a href="/">⬅ Home</a></header>
+
+  <main>
+    <input type="text" id="specialty" placeholder="Enter specialty (e.g., cardiology)">
+    <button onclick="search()">Search</button>
+
+    <ul id="results"></ul>
+  </main>
+
+  <script>
+    async function search() {
+      const specialty = document.getElementById('specialty').value;
+      const res = await fetch('/search_hospital', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ specialty })
+      });
+      const result = await res.json();
+
+      const resultsList = document.getElementById('results');
+      resultsList.innerHTML = "";
+      result.results.forEach(h => {
+        resultsList.innerHTML += `<li>${h.name} (${h.specialty})</li>`;
+      });
+    }
+  </script>
+</body>
+</html>

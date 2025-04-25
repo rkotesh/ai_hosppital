@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Health Chatbot</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .chat-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .chatbox {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 0.5rem;
+    }
+
+    .user-msg, .bot-msg {
+      margin: 0.5rem 0;
+    }
+
+    .user-msg {
+      text-align: right;
+      color: blue;
+    }
+
+    .bot-msg {
+      text-align: left;
+      color: green;
+    }
+
+    #send-btn {
+      margin-top: 0.5rem;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <h2>AI Health Assistant</h2>
+    <div class="chatbox" id="chatbox"></div>
+    <form id="chat-form">
+      <input type="text" id="user_input" name="user_input" placeholder="Ask your question..." required />
+      <button type="submit" id="send-btn">Send</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('chat-form');
+    const chatbox = document.getElementById('chatbox');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = document.getElementById('user_input');
+      const message = input.value;
+      if (!message) return;
+
+      chatbox.innerHTML += `<div class="user-msg"><strong>You:</strong> ${message}</div>`;
+      input.value = '';
+
+      const response = await fetch('/chat', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: `user_input=${encodeURIComponent(message)}`
+      });
+
+      const result = await response.json();
+      chatbox.innerHTML += `<div class="bot-msg"><strong>Bot:</strong> ${result.response}</div>`;
+      chatbox.scrollTop = chatbox.scrollHeight;
+    });
+  </script>
+</body>
+</html>

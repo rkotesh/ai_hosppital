@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .dashboard {
+      max-width: 900px;
+      margin: 2rem auto;
+      background-color: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.75rem;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <h2>🗓 Appointments</h2>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Doctor</th>
+      </tr>
+      {% for appt in appointments %}
+      <tr>
+        <td>{{ appt.name }}</td>
+        <td>{{ appt.appointment_date }}</td>
+        <td>{{ appt.doctor }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <h2>📝 Feedback</h2>
+    <table>
+      <tr>
+        <th>Feedback</th>
+      </tr>
+      {% for fb in feedbacks %}
+      <tr>
+        <td>{{ fb.feedback }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</body>
+</html>
